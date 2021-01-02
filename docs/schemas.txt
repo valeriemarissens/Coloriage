@@ -1,0 +1,165 @@
+tableau couleurs[3]
+
+/* Retourne le 3-coloriage d'un graphe à
+ * n sommets.
+ */
+3_coloriage_det(graphe G) : tableau[n]
+debut
+	c <- gen_couleur(n)
+	i <- 0
+	tant que (i < 3^n) faire:
+		si (est_solution(c[i], G)) alors:
+			return c[i]
+		sinon
+			i++
+		fsi
+	ftantque
+fin
+
+/* Retourne 3^n façons de colorier un graphe
+ * à n sommets avec 3 couleurs.
+ */
+gen_couleur(int n) : tableau[3^n][n]
+	debut
+		tableau tab[3^n] = 0
+
+		pour (i de 1 à 3^n) faire:
+			tableau ci[n] = 0
+			pour (j de 0 à n-1) faire:
+				ci[j] = couleurs[k]
+			fpour
+
+			tab[i] = ci
+		fpour
+	fin
+
+4 sommets : [ | | | ]
+options :
+	(0 0 0 0), 
+		(0 0 0 1), (0 0 0 2)
+		(0 0 1 0), (0 0 2 0)
+		(0 1 0 0), (0 2 0 0) ...
+	(1 0 0 0), (1 0 0 1), ...
+	(2 0 0 0), (2 0 0 1), ...
+
+k = 0
+pour (j de 1 à n) faire: //sommets
+	ci[j] = k
+	si (k < 3) alors:
+		k++
+	sinon:
+		k = 0
+(0 1 2 0 1 2 0 1 2)
+
+pour (k de 0 à 2) faire:
+	pour (j de 1 à n) faire: //sommets
+		ci[j] = k
+
+(0 0 0 0) (1 0 0 0) (0 1 0 0) (0 0 0 1)
+(2 0 0 0)
+(1 1 1 1)
+(2 2 2 2)
+
+
+pour (j de 1 à n) faire: //sommets
+	pour (k de 0 à 2) faire:
+		ci[j] = k
+(2 2 2 2)
+
+
+tableau tab[3^n] = 0
+pour (i de 0 à (3^n)-1) faire: 
+	pour (k de 0 à 2) faire:
+		pour (j de 0 à n-1) faire:
+			tab[i][j] = couleurs[k]
+
+(0 0 0 0)
+(1 1 1 1)
+(2 2 2 2)
+		
+
+
+/* Vérifie que le graphe est 3-coloriable par
+ * ci.
+ * @param ci tableau avec n couleurs, un pour
+ * chaque sommet.
+ * @param G le graphe à colorier, il a n sommets
+ * et m arêtes.
+ */
+est_solution(tableau[n] ci, graphe G) : booléen
+debut
+	pour (i de 0 à m) faire:
+		x1 : sommet 1 de arête i
+		x2 : sommet 2 de arête i
+		si (x1.couleur == x2.couleur) alors:
+			return false
+		fsi
+	fpour
+
+	return true
+fin
+
+
+
+
+
+=> O(3^n)
+
+------------
+
+gen_couleur(int n){
+	xi <- random(0, 1)
+	tant que phi != 1 faire
+		// On vérifie les sous-formules
+		si (il existe i tel que phii != 0) alors
+			xi <- |xi, xi € phii
+		phi <- ^ phii
+}
+
+
+=> O(n^2)
+
+
+----------
+couleurs : c1, c2, c3
+
+
+pour (i de 0 à n) faire:
+	sommet : xi
+
+
+
+
+
+################# Question 3.a #################
+algo 3SAT :
+- on part d'une valeur des variables quelconque
+- tant qu'on n'a pas trouver la solution:
+	- il y a une clause l1vl2vl3 qui n'est pas satisfaite (l1=0 et l2=0 et l3=0)
+	- avec proba 1/3 on fixe l1 = 1
+	- avec proba 1/3 on fixe l2 = 1
+	- avec proba 1/3 on fixe l3 = 1
+- si au bout de k itérations du tant que, on n'a pas trouvé de solution, on s'arrête.
+
+algo 3-COL:
+- on part d'une valeur des couleurs quelconque
+- tant qu'on n'a pas trouver la solution:
+	- comme on n'a pas de solution, il y a une arête x1-x2 où x1.couleur == x2.couleur
+	- avec proba 1/2 on change x1.couleur à une des 2 autres couleurs
+	- avec proba 1/2 on change x1.couleur à l'autre couleur
+- si au bout de k itérations du tant que, on n'a pas trouvé de solution, on s'arrête.
+
+autre option:
+///// Random
+gen_couleur(int n) : tableau[n]
+debut
+	tableau ci[n]
+	pour (j de 0 à n-1) faire:
+		int k = random(0,2)
+		ci[j] = couleurs[k]
+	fpour
+
+	return ci
+fin
+
+################# Question 3.b #################
