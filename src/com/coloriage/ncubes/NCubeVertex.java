@@ -14,18 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Vertex {
+public class NCubeVertex {
     private final int nb;
     private final String name;
-    private List<Vertex> neighbors;
+    private List<NCubeVertex> neighbors;
 
-    public Vertex(String name, int nb){
+    public NCubeVertex(String name, int nb){
         this.nb = nb;
         this.name = name;
         this.neighbors = new ArrayList<>();
     }
 
-    public void addNeighbor(@NotNull Vertex v){
+    public void addNeighbor(@NotNull NCubeVertex v){
         if (!neighbors.contains(v))
             neighbors.add(v);
     }
@@ -34,15 +34,15 @@ public class Vertex {
         return name;
     }
 
-    public List<Vertex> getNeighbors() {
+    public List<NCubeVertex> getNeighbors() {
         return neighbors;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Vertex)) return false;
-        Vertex vertex = (Vertex) o;
+        if (!(o instanceof NCubeVertex)) return false;
+        NCubeVertex vertex = (NCubeVertex) o;
         return Objects.equals(name, vertex.name);
     }
 

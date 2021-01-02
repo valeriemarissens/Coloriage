@@ -8,6 +8,8 @@
 
 package com.coloriage.ncubes;
 
+import com.coloriage.exceptions.NCubeException;
+
 import java.util.HashMap;
 import java.util.Map;
 

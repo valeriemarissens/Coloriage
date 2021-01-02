@@ -15,7 +15,7 @@ public class NCube {
      * Nombre de dimensions du N-cube.
      */
     private final int N;
-    private final List<Vertex> graph;
+    private final List<NCubeVertex> graph;
 
     public NCube(int nbDimensions){
         this.N = nbDimensions;
@@ -23,7 +23,7 @@ public class NCube {
         int d = (int) Math.pow(2, N);
         this.graph = new ArrayList<>(d);
         for (int i = 0; i < d; i++){
-            Vertex vertex = new Vertex(toBinary(i), i);
+            NCubeVertex vertex = new NCubeVertex(toBinary(i), i);
             graph.add(vertex);
         }
 
@@ -32,12 +32,12 @@ public class NCube {
 
     public void build(){
         for (int i = 0; i < graph.size(); i++){
-            Vertex v = graph.get(i);
+            NCubeVertex v = graph.get(i);
             String name1 = v.getName();
 
             for (int j = 0; j < graph.size(); j++){
                 if (i != j){
-                    Vertex v2 = graph.get(j);
+                    NCubeVertex v2 = graph.get(j);
                     String name2 = v2.getName();
                     int comp = compare(name1, name2);
                     if (comp == 1) {
@@ -52,7 +52,7 @@ public class NCube {
     }
 
     public void testGraph(){
-        for (Vertex v : graph)
+        for (NCubeVertex v : graph)
             System.out.println(v.getName()+" : "+v.getNeighbors().toString());
     }
 
@@ -101,9 +101,10 @@ public class NCube {
         StringBuilder s = new StringBuilder();
 
         s.append(N+"\n");
-        for (Vertex vertex : graph){
-            List<Vertex> neighbors = vertex.getNeighbors();
-
+        for (NCubeVertex vertex : graph){
+            List<NCubeVertex> neighbors = vertex.getNeighbors();
+            // todo : finish this
+            s.append(neighbors.toString());
         }
 
         return s.toString();
