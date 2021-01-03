@@ -6,9 +6,9 @@
  * Copyright (c) 2021 Valérie Marissens Cueva. All rights reserved.
  */
 
-package com.coloriage.ncubes;
+package coloriage.ncubes;
 
-import com.coloriage.exceptions.NCubeException;
+import coloriage.exceptions.NCubeException;
 
 import java.util.HashMap;
 import java.util.Map;

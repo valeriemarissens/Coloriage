@@ -6,12 +6,12 @@
  * Copyright (c) 2021 Valérie Marissens Cueva. All rights reserved.
  */
 
-package com.coloriage.tests;
+package coloriage.tests;
 
-import com.coloriage.exceptions.ThreeColoringException;
-import com.coloriage.troiscoloriage.Edge;
-import com.coloriage.troiscoloriage.Graph;
-import com.coloriage.troiscoloriage.ThreeColoring;
+import coloriage.exceptions.ThreeColoringException;
+import coloriage.troiscoloriage.Edge;
+import coloriage.troiscoloriage.Graph;
+import coloriage.troiscoloriage.ThreeColoring;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

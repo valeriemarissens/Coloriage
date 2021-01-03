@@ -6,9 +6,10 @@
  * Copyright (c) 2021 Valérie Marissens Cueva. All rights reserved.
  */
 
-package com.coloriage.troiscoloriage;
+package coloriage.troiscoloriage;
 
-import com.coloriage.exceptions.ThreeColoringException;
+import coloriage.exceptions.ThreeColoringException;
+import coloriage.utils.Display;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ public class ThreeColoring {
             // Vérifie si l'échec est dû à la présence d'une 4-clique.
             if (isFourClique(problematicVertex))
                 System.out.println("Normal : 4-clique.");
+
             throw new ThreeColoringException("Pas de solution trouvée");
         }
 
@@ -70,6 +72,9 @@ public class ThreeColoring {
         }
         else
             throw new ThreeColoringException("Coloriage non valide.");
+
+        // todo : effacer Affichage du graphe.
+        display();
 
         return solution;
     }

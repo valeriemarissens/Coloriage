@@ -6,7 +6,7 @@
  * Copyright (c) 2021 Valérie Marissens Cueva. All rights reserved.
  */
 
-package com.coloriage.exceptions;
+package coloriage.exceptions;
 
 public class NCubeException extends Exception {
 

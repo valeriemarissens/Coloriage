@@ -6,7 +6,7 @@
  * Copyright (c) 2021 Valérie Marissens Cueva. All rights reserved.
  */
 
-package com.coloriage.ncubes;
+package coloriage.ncubes;
 
 import java.util.*;
 

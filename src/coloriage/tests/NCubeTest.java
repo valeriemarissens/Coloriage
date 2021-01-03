@@ -6,9 +6,9 @@
  * Copyright (c) 2021 Valérie Marissens Cueva. All rights reserved.
  */
 
-package com.coloriage.tests;
+package coloriage.tests;
 
-import com.coloriage.ncubes.NCube;
+import coloriage.ncubes.NCube;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 

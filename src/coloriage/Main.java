@@ -6,14 +6,30 @@
  * Copyright (c) 2021 Valérie Marissens Cueva. All rights reserved.
  */
 
-package com.coloriage;
+package coloriage;
 
+import coloriage.exceptions.GraphLoaderException;
+import coloriage.exceptions.ThreeColoringException;
+import coloriage.troiscoloriage.Graph;
+import coloriage.troiscoloriage.ThreeColoring;
+import coloriage.utils.GraphLoader;
+
+import java.io.IOException;
 import java.util.Arrays;
 
 public class Main {
 
     public static void main(String[] args) {
-        testExponentiel();
+        GraphLoader graphLoader = GraphLoader.getInstance();
+        try {
+            Graph graph = graphLoader.loadFile(10);
+            ThreeColoring threeColoring = new ThreeColoring(graph);
+            int[] solution = threeColoring.color();
+
+        } catch (GraphLoaderException | IOException | ThreeColoringException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private static void testExponentiel(){ //bug

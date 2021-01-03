@@ -6,7 +6,7 @@
  * Copyright (c) 2021 Valérie Marissens Cueva. All rights reserved.
  */
 
-package com.coloriage.troiscoloriage;
+package coloriage.troiscoloriage;
 
 /**
  * Représente une arête non orientée.

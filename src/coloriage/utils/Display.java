@@ -2,11 +2,11 @@
  * Display.java
  * Coloriage
  *
- * Created by Valérie Marissens Cueva on 2/1/2021.
+ * Created by Valérie Marissens Cueva on 3/1/2021.
  * Copyright (c) 2021 Valérie Marissens Cueva. All rights reserved.
  */
 
-package com.coloriage.troiscoloriage;
+package coloriage.utils;
 
 import javax.swing.*;
 import java.awt.*;
