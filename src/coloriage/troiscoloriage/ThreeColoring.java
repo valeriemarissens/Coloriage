@@ -50,6 +50,7 @@ public class ThreeColoring {
 
         // Échec du coloriage.
         if (!foundColors) {
+            display();
 
             // Vérifie si l'échec est dû à la présence d'une 4-clique.
             if (isInFourClique(problematicVertex))
@@ -60,8 +61,7 @@ public class ThreeColoring {
 
         // Vérification de la coloration.
         if (isValid()) {
-            // todo: effacer souts
-            System.out.println("VALIDE");
+            System.out.println("Coloration possible :");
             for (int v = 0; v < n; v++) {
                 System.out.println("color " + v + " : " + solution[v]);
             }
@@ -71,9 +71,6 @@ public class ThreeColoring {
         }
         else
             throw new ThreeColoringException("Coloriage non valide.");
-
-        // todo : effacer Affichage du graphe.
-        display();
 
         return solution;
     }
@@ -177,15 +174,19 @@ public class ThreeColoring {
      * @return toutes les partitions de 4 éléments de la liste.
      */
     public List<List<Integer>> partitions(List<Integer> neighbors){
-        int n = neighbors.size();
-        int totalPartitions = fact(n) / (fact(4) * fact(n - 4));
-        List<List<Integer>> partitions = new ArrayList<>(totalPartitions);
+        List<List<Integer>> partitions = new ArrayList<>();;
+        int k = neighbors.size();
 
-        for (List<Integer> partition : powerSet(neighbors)){
-            if (partition.size() == 4)
-                partitions.add(partition);
+        if (k != 4) {
+            for (List<Integer> partition : powerSet(neighbors)) {
+                if (partition.size() == 4) {
+                    partitions.add(partition);
+                }
+            }
         }
-
+        else{
+            partitions.add(neighbors);
+        }
         return partitions;
     }
 
