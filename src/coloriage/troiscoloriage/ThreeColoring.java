@@ -11,9 +11,8 @@ package coloriage.troiscoloriage;
 import coloriage.exceptions.ThreeColoringException;
 import coloriage.utils.Display;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ThreeColoring {
     private final Graph graph;
@@ -53,8 +52,8 @@ public class ThreeColoring {
         if (!foundColors) {
 
             // Vérifie si l'échec est dû à la présence d'une 4-clique.
-            if (isFourClique(problematicVertex))
-                System.out.println("Normal : 4-clique.");
+            if (isInFourClique(problematicVertex))
+                throw new ThreeColoringException("Pas de solution trouvée car 4-clique");
 
             throw new ThreeColoringException("Pas de solution trouvée");
         }
@@ -102,7 +101,7 @@ public class ThreeColoring {
         }
 
         this.problematicVertex = vertex;
-        System.out.println("NOT FOUND: "+vertex);
+        System.out.println("Sommet problématique : "+vertex);
         return false;
     }
 
@@ -127,12 +126,145 @@ public class ThreeColoring {
      *          PRESENCE 4-CLIQUE
      * --------------------------------- */
 
-    /* todo : fix ceci (ou chercher bien sur internetla déf de 4-clique ?)
-     * dit oui à :
+    /**
+     * Cherche tous les ensembles de 4 éléments où se trouve le sommet, ensuite
+     * regarde si un de ces ensembles est un 4-clique.
+     *
+     * @param vertex sommet qui nous intéresse.
+     * @return vrai si le sommet est dans une 4-clique.
+     */
+    public boolean isInFourClique(int vertex){
+        List<Edge> adj = graph.adj(vertex);
+
+        // Le sommet a au moins 3 voisins : sinon impossible d'être dans une 4-clique.
+        if (adj.size() >= 3) {
+
+            // On récupère les voisins du sommet.
+            List<Integer> neighbors = new ArrayList<>();
+            neighbors.add(vertex);
+            for (Edge e : adj) {
+                neighbors.add(e.other(vertex));
+            }
+
+            // On récupère toutes les partitions de 4 sommets de l'ensemble des voisins.
+            List<List<Integer>> partitions = partitions(neighbors);
+
+            // On vérifie si une des partitions est une 4-clique.
+            for (List<Integer> partition : partitions) {
+                if (isFourClique(partition)) {
+                    System.out.println("4-clique trouvée : "+partition.toString());
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param i entier.
+     * @return factorielle de i.
+     */
+    private int fact(int i){
+        if (i <= 1)
+            return 1;
+
+        return i * fact(i - 1);
+    }
+
+    /**
+     * @param neighbors liste des sommets.
+     * @return toutes les partitions de 4 éléments de la liste.
+     */
+    public List<List<Integer>> partitions(List<Integer> neighbors){
+        int n = neighbors.size();
+        int totalPartitions = fact(n) / (fact(4) * fact(n - 4));
+        List<List<Integer>> partitions = new ArrayList<>(totalPartitions);
+
+        for (List<Integer> partition : powerSet(neighbors)){
+            if (partition.size() == 4)
+                partitions.add(partition);
+        }
+
+        return partitions;
+    }
+
+    /**
+     * Retrouve tous les sous-ensembles de list avec l'algorithme de Power Set.
+     *
+     * @param list à diviser.
+     * @return tous les sous-ensembles de list.
+     */
+    private List<List<Integer>> powerSet(Collection<Integer> list) {
+        List<List<Integer>> ps = new ArrayList<>();
+        ps.add(new ArrayList<>());
+
+        for (int vertex : list) {
+            List<List<Integer>> newPs = new ArrayList<>();
+
+            for (List<Integer> subset : ps) {
+                // Copie tous les sous-ensembles de ps.
+                newPs.add(subset);
+
+                // Ajoute les sous-ensembles + le sommet actuel.
+                List<Integer> newSubset = new ArrayList<>(subset);
+                newSubset.add(vertex);
+                newPs.add(newSubset);
+            }
+
+            // p = list.subList(0, list.indexOf(vertex) + 1)
+            ps = newPs;
+        }
+        return ps;
+    }
+
+    /**
+     * @param vertices liste des sommets.
+     * @return vrai si les sommets de la liste forment une 4-clique.
+     */
+    private boolean isFourClique(List<Integer> vertices){
+        boolean fourClique = true;
+
+        if (vertices.size() == 4){
+            for (int i = 0; i < 4; i++){
+                for (int j = 0; j < 4; j++){
+                    if (i != j){
+                        if (!isConnected(vertices.get(i), vertices.get(j))) {
+                            fourClique = false;
+                        }
+                    }
+                }
+            }
+        }
+        else{
+            fourClique = false;
+        }
+
+        return fourClique;
+    }
+
+    /**
+     * @param v1 sommet 1
+     * @param v2 sommet 2
+     * @return vrai si les deux sommets sont adjcents.
+     */
+    private boolean isConnected(int v1, int v2){
+        for (Edge e : graph.adj(v1)){
+            if (v2 == e.other(v1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // ------------------------------------------------
+
+
+    /* Dans cette partie, retourne vrai à :
      * O    -   2
      * |    /   |
      * 3    -   1
-     * alors qu'il devrait y avoir une arête entre 0 et 1 (?
+     * alors qu'il devrait y avoir une arête entre 0 et 1.
      */
 
     /**
@@ -141,7 +273,7 @@ public class ThreeColoring {
      * @param vertex sommet qui nous intéresse.
      * @return vrai si le sommet vertex appartient à une 4-clique.
      */
-    public boolean isFourClique(int vertex){
+    public boolean isFourClique2(int vertex){
         int nbConnectedVertices = 0;
         for (int v2 = 0; v2 < n; v2++){
             if (pathExists(vertex, v2))

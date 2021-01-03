@@ -22,7 +22,7 @@ public class Main {
     public static void main(String[] args) {
         GraphLoader graphLoader = GraphLoader.getInstance();
         try {
-            Graph graph = graphLoader.loadFile(10);
+            Graph graph = graphLoader.loadFile(5);
             ThreeColoring threeColoring = new ThreeColoring(graph);
             int[] solution = threeColoring.color();
 

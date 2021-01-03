@@ -6,8 +6,6 @@
  * Copyright (c) 2021 Valérie Marissens Cueva. All rights reserved.
  */
 
-package coloriage.tests;
-
 import coloriage.exceptions.ThreeColoringException;
 import coloriage.troiscoloriage.Edge;
 import coloriage.troiscoloriage.Graph;
@@ -15,6 +13,8 @@ import coloriage.troiscoloriage.ThreeColoring;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -107,14 +107,22 @@ class ThreeColoringTest {
      * |    X   |
      * 3    -   1
      */
-    @SuppressWarnings("unchecked")
     @Test
     void isFourCliqueTrue() {
-        Graph g = Graph.example();
-        g.addEdge(3, 2);
+        Graph g = new Graph(4);
+        g.setCoordinate(0, 100,100);
+        g.setCoordinate(1, 300,300);
+        g.setCoordinate(2, 300,100);
+        g.setCoordinate(3, 100,300);
+        g.addEdge(new Edge(0,3));
+        g.addEdge(new Edge(2,1));
+        g.addEdge(new Edge(1,0));
+        g.addEdge(new Edge(3,2));
+        g.addEdge(new Edge(3,1));
+        g.addEdge(new Edge(2,0));
 
         ThreeColoring threeColoring = new ThreeColoring(g);
-        assertTrue(threeColoring.isFourClique(3));
+        assertTrue(threeColoring.isInFourClique(3));
     }
 
     /**
@@ -127,7 +135,7 @@ class ThreeColoringTest {
         Graph g = Graph.example();
 
         ThreeColoring threeColoring = new ThreeColoring(g);
-        assertFalse(threeColoring.isFourClique(3));
+        assertFalse(threeColoring.isInFourClique(3));
     }
 
     /**
@@ -146,6 +154,16 @@ class ThreeColoringTest {
         g.addEdge(new Edge(1,2));
 
         ThreeColoring threeColoring = new ThreeColoring(g);
-        assertFalse(threeColoring.isFourClique(3));
+        assertFalse(threeColoring.isInFourClique(3));
     }
-}
+
+
+
+    @Test
+    void partitions(){
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 5; i++)
+            list.add(i);
+
+        System.out.println(threeColoring.partitions(list));
+    }}

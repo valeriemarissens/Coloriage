@@ -2,11 +2,9 @@
  * NCubeTest.java
  * Coloriage
  *
- * Created by Valérie Marissens Cueva on 1/1/2021.
+ * Created by Valérie Marissens Cueva on 3/1/2021.
  * Copyright (c) 2021 Valérie Marissens Cueva. All rights reserved.
  */
-
-package coloriage.tests;
 
 import coloriage.ncubes.NCube;
 import org.junit.jupiter.api.*;
