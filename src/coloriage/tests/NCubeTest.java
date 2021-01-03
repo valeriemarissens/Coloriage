@@ -7,13 +7,19 @@
  */
 
 import coloriage.ncubes.NCube;
+import coloriage.ncubes.NCubeVertex;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NCubeTest {
     @Test
     void build(){
-        NCube nCube = new NCube(3);
+        NCube nCube = new NCube(10);
+        for (NCubeVertex v1 : nCube.getNcube()){
+            for (NCubeVertex v2 : v1.getNeighbors()){
+                assertEquals(1, nCube.compare(v1.getBinaryName(), v2.getBinaryName()));
+            }
+        }
     }
 
     @Test
@@ -25,6 +31,7 @@ class NCubeTest {
 
         assertEquals(2, ncube.compare(o,p));
         assertEquals(1, ncube.compare(k,p));
+        assertEquals(1, ncube.compare(k,o));
     }
 
     @Test

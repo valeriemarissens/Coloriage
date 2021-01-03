@@ -51,7 +51,7 @@ class ThreeColoringTest {
         threeColoring = new ThreeColoring(g);
         int[] solution = threeColoring.color();
 
-        for (int vertex = 0; vertex < g.vertices(); vertex++){
+        for (int vertex = 0; vertex < g.nbVertices(); vertex++){
             for (Edge e : g.adj(vertex)){
                 int v2 = e.other(vertex);
                 assertTrue(solution[vertex] != solution[v2]);
@@ -94,7 +94,7 @@ class ThreeColoringTest {
         threeColoring = new ThreeColoring(g);
         int[] solution = threeColoring.color();
 
-        for (int vertex = 0; vertex < g.vertices(); vertex++){
+        for (int vertex = 0; vertex < g.nbVertices(); vertex++){
             for (Edge e : g.adj(vertex)){
                 int v2 = e.other(vertex);
                 assertTrue(solution[vertex] != solution[v2]);

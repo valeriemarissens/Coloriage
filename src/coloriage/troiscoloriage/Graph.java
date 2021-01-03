@@ -21,17 +21,13 @@ public class Graph{
     private final int[] coordX;
     private final int[] coordY;
     private final int V;
-    private int E;
 
     /**
      *
      * @param N nombre de sommets.
      */
-    @SuppressWarnings("unchecked")
-    public Graph(int N)
-    {
+    public Graph(int N) {
         this.V = N;
-        this.E = 0;
         adj = (ArrayList<Edge>[]) new ArrayList[N];
         for (int v= 0; v < N; v++)
             adj[v] = new ArrayList<>();
@@ -43,13 +39,12 @@ public class Graph{
             coordY[v] = 0;
     }
 
-    public int vertices()
+    public int nbVertices()
     {
         return V;
     }
 
-    public void setCoordinate(int i, int x, int y)
-    {
+    public void setCoordinate(int i, int x, int y) {
         coordX[i] = x;
         coordY[i] = y;
     }
@@ -59,8 +54,7 @@ public class Graph{
      *
      * @param e arête.
      */
-    public void addEdge(Edge e)
-    {
+    public void addEdge(Edge e) {
         int v = e.getFrom();
         int w = e.getTo();
         adj[v].add(e);
@@ -79,8 +73,7 @@ public class Graph{
     /**
      * @return toutes les arêtes du graphe.
      */
-    public ArrayList<Edge> edges()
-    {
+    public ArrayList<Edge> edges() {
         ArrayList<Edge> list = new ArrayList<>();
         for (int v = 0; v < V; v++)
             for (Edge e : adj(v)) {
@@ -128,6 +121,11 @@ public class Graph{
         return g;
     }
 
+    /**
+     * Dessine le graphe.
+     * @param solution 3-coloriage des sommets proposé.
+     * @return image du graphe.
+     */
     public BufferedImage toImage(int[] solution){
         BufferedImage image = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = image.createGraphics();
@@ -136,21 +134,16 @@ public class Graph{
         g2d.setColor(Color.BLACK);
         BasicStroke bs = new BasicStroke(2);
         g2d.setStroke(bs);
+
         // dessine les arêtes
-        for (Edge e: edges())
-        {
+        for (Edge e: edges()){
             int i = e.getFrom();
             int j = e.getTo();
-            if (e.isUsed())
-                g2d.setColor(Color.RED);
-            else
-                g2d.setColor(Color.GRAY);
 
             g2d.drawLine(coordX[i], coordY[i], coordX[j], coordY[j]);
         }
         // dessine les sommets
-        for (int i = 0; i < V; i++)
-        {
+        for (int i = 0; i < V; i++){
             switch (solution[i]){
                 case 0 :
                     g2d.setColor(new Color(239, 83, 83));
@@ -172,35 +165,6 @@ public class Graph{
         }
 
         return image;
-    }
-
-    /**
-     * Écrit un fichier dot contenant le résultat.
-     *
-     * @param s todo : what is this
-     */
-    public void writeFile(String s)
-    {
-        try
-        {
-            PrintWriter writer = new PrintWriter(s, "UTF-8");
-            writer.println("digraph G{");
-            for (Edge e: edges())
-                writer.println(e.getFrom() + "->" + e.getTo() + ";");
-            writer.println("}");
-            writer.close();
-        }
-        catch (IOException e)
-        {}
-    }
-
-    public void clean() {
-        for (Edge e : edges()){
-            e.mark(false);
-        }
-    }
-
-    public void addEdge(int i, int i1) {
     }
 }
 

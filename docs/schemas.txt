@@ -162,4 +162,77 @@ debut
 	return ci
 fin
 
+################# Question 3.c #################
+
+Proposez un algorithme qui vérifie si un sommet en conflit lors d’une tentative de 3-coloriage appartient à une 4-clique.
+
+isFourClique(Vertex v) : booléen
+début
+	k <- 0
+	pour i de 0 à n faire :
+		v2 = graph.vertices(i)
+		si (cheminExiste(v, v2)) alors:
+			k++
+		fsi
+	fpour
+
+	return k >= 4
+fin
+
+cheminExiste(Vertex v1, Vertex v2) : booléen // O(2m)
+début
+	tab1[m] <- parcourtProf(v1)
+	tab2[m] <- parcourtProf(v2)
+	return tab1.contient(v2) && tab2.contient(v1)
+fin
+
+parcourtProf(Vertex v, Vertex[m] marques) : tab[m]
+début
+	marques.add(v)
+	pour tout voisin p de v faire :
+		si (p pas marqué) alors:
+			return parcourtProf(p, marques)
+		fsi
+	fpour
+fin
+
 ################# Question 3.b #################
+
+coloriage(graphe g) : tab[n]
+début
+	tableau solution[n]
+	pour i de 1 à n faire:
+		v <- graphe.sommets(i)
+		si (v pas colorié) alors:
+			c <- choisitCouleur(v)
+
+
+fin
+
+
+coloriage(Sommet v) : tab[n]
+début
+	tableau solution[n]
+	si (v == n) alors:
+		return null
+
+	pour c de 1 à 3 faire :
+		si (estColoriable(v, c)) alors:
+			solution[v] = c
+			coloriage(v + 1)
+
+			solution[v] = 0
+		fsi
+
+		//solution[v] = 0
+
+	fpour
+fin
+
+estColoriable(Sommet v, Couleur c) : booléen
+début
+	pour tout voisin v2 de v faire :
+		si v2.couleur == c alors:
+			retourne faux
+	retourne vrai
+fin

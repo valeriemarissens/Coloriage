@@ -9,7 +9,10 @@
 package coloriage;
 
 import coloriage.exceptions.GraphLoaderException;
+import coloriage.exceptions.NCubeException;
 import coloriage.exceptions.ThreeColoringException;
+import coloriage.ncubes.NCube;
+import coloriage.ncubes.NCubeGenerator;
 import coloriage.troiscoloriage.Edge;
 import coloriage.troiscoloriage.Graph;
 import coloriage.troiscoloriage.ThreeColoring;
@@ -18,17 +21,25 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Main {
 
     public static void main(String[] args) {
-        // Test avec un graphe fixe.
-        petitTest();
+        // Test avec un graphe fixe correct.
+        //correctTest();
+
+        // Test avec un graphe fixe avec 4-clique.
+        //incorrectTest();
 
         // Test avec un fichier.
-        testWithFile(5);
+        //testWithFile(5);
+
+        // Test avec un N-Cube.
+        testNCube(8);
     }
 
     /**
@@ -37,11 +48,11 @@ public class Main {
      */
     private static void testWithFile(int size){
         try {
-            Graph graph = GraphLoader.getInstance().loadFile(size);
+            Graph graph = GraphLoader.getInstance().loadFile(size, false);
             ThreeColoring threeColoring = new ThreeColoring(graph);
             threeColoring.color();
-
-        } catch (GraphLoaderException | IOException | ThreeColoringException e) {
+        }
+        catch (GraphLoaderException | IOException | ThreeColoringException e) {
             e.printStackTrace();
         }
     }
@@ -52,20 +63,20 @@ public class Main {
      * |        |
      * 3   -    1
      */
-    private static void petitTest(){
-            Graph g = new Graph(5);
-            g.setCoordinate(0, 100,100);
-            g.setCoordinate(1, 300,300);
-            g.setCoordinate(2, 300,100);
-            g.setCoordinate(3, 100,300);
-            g.setCoordinate(4, 400,100);
-            g.addEdge(new Edge(0,3));
-            g.addEdge(new Edge(0,2));
-            g.addEdge(new Edge(1,3));
-            g.addEdge(new Edge(4,2));
-            g.addEdge(new Edge(1,2));
+    private static void correctTest(){
+        Graph g = new Graph(5);
+        g.setCoordinate(0, 100,100);
+        g.setCoordinate(1, 300,300);
+        g.setCoordinate(2, 300,100);
+        g.setCoordinate(3, 100,300);
+        g.setCoordinate(4, 400,100);
+        g.addEdge(new Edge(0,3));
+        g.addEdge(new Edge(0,2));
+        g.addEdge(new Edge(1,3));
+        g.addEdge(new Edge(4,2));
+        g.addEdge(new Edge(1,2));
 
-            ThreeColoring threeColoring = new ThreeColoring(g);
+        ThreeColoring threeColoring = new ThreeColoring(g);
         try {
             threeColoring.color();
         } catch (ThreeColoringException e) {
@@ -73,28 +84,60 @@ public class Main {
         }
     }
 
-    private static void testExponentiel(){ //bug
-        int n = 4;
-        int[] couleurs = new int[3];
-        for (int i = 0; i < 3; i++){
-            couleurs[i] = i;
+    /**
+     * O   -    2   -   4
+     * |   X    |
+     * 3   -    1
+     */
+    private static void incorrectTest(){
+        Graph g = new Graph(5);
+        g.setCoordinate(0, 100,100);
+        g.setCoordinate(1, 300,300);
+        g.setCoordinate(2, 300,100);
+        g.setCoordinate(3, 100,300);
+        g.setCoordinate(4, 400,100);
+        g.addEdge(new Edge(0,3));
+        g.addEdge(new Edge(0,2));
+        g.addEdge(new Edge(1,3));
+        g.addEdge(new Edge(4,2));
+        g.addEdge(new Edge(3,2));
+        g.addEdge(new Edge(1,2));
+        g.addEdge(new Edge(1,0));
+
+        ThreeColoring threeColoring = new ThreeColoring(g);
+        try {
+            threeColoring.color();
+        } catch (ThreeColoringException e) {
+            e.printStackTrace();
         }
-        System.out.println("couleurs:"+ Arrays.toString(couleurs));
+    }
 
-        int[][] tab = new int[(int) Math.pow(3, n)][n];
-
-
-        for (int k = 0; k < 3; k++){
-            for (int j = 0; j < n; j++){
-                for(int i = 0; i < Math.pow(3, n); i++){
-                    //System.out.println("i:"+i+", j:"+j+", k:"+k);
-                    tab[i][j] = couleurs[k];
-                }
-            }
+    /**
+     * Sauvegarde un N-Cube de taille donnée.
+     * @param dimension nb de dimensions du N-Cube, ie N.
+     */
+    private static void saveNCube(int dimension){
+        NCube ncube = null;
+        try {
+            ncube = NCubeGenerator.getInstance().getCube(dimension);
+        } catch (NCubeException e) {
+            e.printStackTrace();
         }
+        Objects.requireNonNull(ncube).saveFile();
+    }
 
-        for (int i = 0; i < Math.pow(3, n); i++){
-            System.out.println(Arrays.toString(tab[i]));
+    /**
+     * Test de coloriage avec un N-Cube.
+     * @param dimension N.
+     */
+    private static void testNCube(int dimension){
+        try {
+            Graph graph = GraphLoader.getInstance().loadFile(dimension, true);
+            ThreeColoring threeColoring = new ThreeColoring(graph);
+            threeColoring.color();
+        }
+        catch (GraphLoaderException | IOException | ThreeColoringException e) {
+            e.printStackTrace();
         }
     }
 }

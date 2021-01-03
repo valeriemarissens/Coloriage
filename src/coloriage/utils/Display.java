@@ -29,8 +29,7 @@ public class Display extends JFrame {
     }
 
     public void setImage(Image blop) {
-        if (!visible)
-        {
+        if (!visible){
             visible = true;
             this.setVisible(true);
         }

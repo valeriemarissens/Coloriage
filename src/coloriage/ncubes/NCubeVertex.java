@@ -14,14 +14,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Sommet d'un N-Cube.
+ */
 public class NCubeVertex {
+    /**
+     * Nom du sommet en décimal.
+     */
     private final int nb;
-    private final String name;
-    private List<NCubeVertex> neighbors;
+
+    /**
+     * Nom du sommet en binaire.
+     */
+    private final String binaryName;
+
+    /**
+     * Voisins du sommet.
+     */
+    private final List<NCubeVertex> neighbors;
 
     public NCubeVertex(String name, int nb){
         this.nb = nb;
-        this.name = name;
+        this.binaryName = name;
         this.neighbors = new ArrayList<>();
     }
 
@@ -30,12 +44,16 @@ public class NCubeVertex {
             neighbors.add(v);
     }
 
-    public String getName() {
-        return name;
+    public String getBinaryName() {
+        return binaryName;
     }
 
     public List<NCubeVertex> getNeighbors() {
         return neighbors;
+    }
+
+    public int getNb() {
+        return nb;
     }
 
     @Override
@@ -43,16 +61,16 @@ public class NCubeVertex {
         if (this == o) return true;
         if (!(o instanceof NCubeVertex)) return false;
         NCubeVertex vertex = (NCubeVertex) o;
-        return Objects.equals(name, vertex.name);
+        return Objects.equals(binaryName, vertex.binaryName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(binaryName);
     }
 
     @Override
     public String toString() {
-        return this.name;
+        return this.binaryName;
     }
 }

@@ -12,18 +12,40 @@ import coloriage.exceptions.ThreeColoringException;
 import coloriage.utils.Display;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
+/**
+ * Classe qui se charge du 3-coloriage d'un graphe.
+ */
 public class ThreeColoring {
+
+    /**
+     * Graphe à colorier.
+     */
     private final Graph graph;
+
+    /**
+     * Nombre de sommets du graphe.
+     */
     private final int n;
+
+    /**
+     * Couleurs possibles (il y en a 3).
+     */
     private final int[] colors;
+
+    /**
+     * Coloriage suggéré.
+     */
     private int[] solution;
+
+    /**
+     * Sommet qui pose problème lors de la 3-coloration du graphe.
+     */
     private int problematicVertex;
 
     public ThreeColoring(Graph graph){
         this.graph = graph;
-        this.n = graph.vertices();
+        this.n = graph.nbVertices();
         this.colors = new int[3];
         this.solution = new int[n];
         this.problematicVertex = -1;
@@ -53,8 +75,10 @@ public class ThreeColoring {
             display();
 
             // Vérifie si l'échec est dû à la présence d'une 4-clique.
-            if (isInFourClique(problematicVertex))
-                throw new ThreeColoringException("Pas de solution trouvée car 4-clique");
+            if (isInFourClique(problematicVertex)) {
+                String message = "Pas de solution trouvée car 4-clique : "+problematicVertex;
+                throw new ThreeColoringException(message);
+            }
 
             throw new ThreeColoringException("Pas de solution trouvée");
         }
@@ -174,7 +198,7 @@ public class ThreeColoring {
      * @return toutes les partitions de 4 éléments de la liste.
      */
     public List<List<Integer>> partitions(List<Integer> neighbors){
-        List<List<Integer>> partitions = new ArrayList<>();;
+        List<List<Integer>> partitions = new ArrayList<>();
         int k = neighbors.size();
 
         if (k != 4) {
@@ -259,7 +283,6 @@ public class ThreeColoring {
     }
 
     // ------------------------------------------------
-
 
     /* Dans cette partie, retourne vrai à :
      * O    -   2
@@ -360,7 +383,7 @@ public class ThreeColoring {
         Display d = new Display("Graphe");
         d.setImage(graph.toImage(solution));
 
-        System.out.println("Veuillez appuyer sur une touche pour fermer la fenêtre.");
+        System.out.println("Veuillez appuyer sur une touche pour fermer la fenêtre qui montre le graphe et continuer l'exécution.");
         new Scanner(System.in).nextLine();
         d.close();
     }
